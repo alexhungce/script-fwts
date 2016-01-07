@@ -45,8 +45,8 @@ cat << EOF >> .git/config
          url = ssh+git://kernel.ubuntu.com/srv/kernel.ubuntu.com/git/hwe/fwts.git
 EOF
 
-# generate changelog based on the previous git HEAD (TODO - get previous version)
-git shortlog V15.12.00..HEAD | sed "s/^     /  */g" > ../fwts_${RELEASE_VERSION}_release_note
+# generate changelog based on the previous git tag..HEAD
+git shortlog $(git describe --abbrev=0 --tags)..HEAD | sed "s/^     /  */g" #> ../fwts_${RELEASE_VERSION}_release_note
 
 # add the changelog to the changelog file
 echo "ensure the format is correct, . names, max 80 characters per line etc."
