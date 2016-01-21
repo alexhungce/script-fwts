@@ -26,8 +26,7 @@ fi
 
 RELEASE_VERSION=${1}
 echo "FWTS V${RELEASE_VERSION} is to be released."
-echo "Please [ENTER] to continue or Ctrl+C to abort"
-read 
+read -p "Please [ENTER] to continue or Ctrl+C to abort"
 
 # == Prepare the source code ==
 # download fwts source code
@@ -54,8 +53,7 @@ echo "update the version, e.g: \"fwts (15.12.00-0ubuntu0) UNRELEASED; urgency=lo
 echo "\"fwts (16.01.00-0ubuntu0) xenial; urgency=low\""
 
 # TODO may need to pop a window for above messages
-echo "press [ENTER] to continue"
-read
+read -p "Please [ENTER] to continue or Ctrl+C to abort"
 
 $EDITOR ../fwts_${RELEASE_VERSION}_release_note &
 dch -i
