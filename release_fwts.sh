@@ -58,7 +58,7 @@ read -p "Please [ENTER] to continue or Ctrl+C to abort"
 $EDITOR ../fwts_${RELEASE_VERSION}_release_note &
 dch -i
 # wait for copying to dch -i
-echo "type \"done\" to continue..."a
+echo "type \"done\" to continue..."
 line=""
 while true ; do
 	read line
