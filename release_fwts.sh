@@ -45,12 +45,12 @@ cat << EOF >> .git/config
 EOF
 
 # generate changelog based on the previous git tag..HEAD
-git shortlog $(git describe --abbrev=0 --tags)..HEAD | sed "s/^     /  */g" #> ../fwts_${RELEASE_VERSION}_release_note
+git shortlog $(git describe --abbrev=0 --tags)..HEAD | sed "s/^     /  */g" > ../fwts_${RELEASE_VERSION}_release_note
 
 # add the changelog to the changelog file
-echo "ensure the format is correct, . names, max 80 characters per line etc."
-echo "update the version, e.g: \"fwts (15.12.00-0ubuntu0) UNRELEASED; urgency=low\" to "
-echo "\"fwts (16.01.00-0ubuntu0) xenial; urgency=low\""
+echo "1. ensure the format is correct, . names, max 80 characters per line etc."
+echo "2. update the version, e.g: \"fwts (15.12.00-0ubuntu0) UNRELEASED; urgency=low\" to "
+echo "   \"fwts (16.01.00-0ubuntu0) xenial; urgency=low\""
 
 # TODO may need to pop a window for above messages
 read -p "Please [ENTER] to continue or Ctrl+C to abort"
@@ -104,10 +104,10 @@ scp fwts-V${RELEASE_VERSION}.tar.gz fwts.ubuntu.com:/srv/fwts.ubuntu.com/www/rel
 
 # update SHA256 on fwts.ubuntu.com
 echo "Run the following commands on fwts.ubuntu.com:"
-echo "\tssh fwts.ubuntu.com"
-echo "\tcd /srv/fwts.ubuntu.com/www/release/"
-echo "\tsha256sum fwts-V${RELEASE_VERSION}.tar.gz >> SHA256SUMS"
-echo "\texit"
+echo "  1. ssh fwts.ubuntu.com"
+echo "  2. cd /srv/fwts.ubuntu.com/www/release/"
+echo "  3. sha256sum fwts-V${RELEASE_VERSION}.tar.gz >> SHA256SUMS"
+echo "  4. exit"
 echo ""
 
 echo "type \"done\" to continue..."a
@@ -130,12 +130,12 @@ echo "Check build status @ \
       https://launchpad.net/~firmware-testing-team/+archive/ubuntu/ppa-fwts-unstable-crack"
 
 # finalize
-echo "when the build finishes, please do the following:"
-echo "\t1. copy packages to stage PPA (Firmware Test Suite (Stable))"
-echo "\t2. upload the new FWTS package to the Ubuntu universe archive"
-echo "\t3. email to fwts-devel and fwts-announce lists"
-echo "\t4. update milestone on https://launchpad.net/fwts"
-echo "\t5. build new fwts-live"
+echo "When the build finishes, please do the following:"
+echo "  1. copy packages to stage PPA (Firmware Test Suite (Stable))"
+echo "  2. upload the new FWTS package to the Ubuntu universe archive"
+echo "  3. email to fwts-devel and fwts-announce lists"
+echo "  4. update milestone on https://launchpad.net/fwts"
+echo "  5. build new fwts-live"
 
 
 
