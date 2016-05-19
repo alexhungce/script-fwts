@@ -11,7 +11,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 shopt -s -o nounset
-
+TEST_BUILD_PPA=false
 EDITOR=gedit
 
 if [ $# -eq 0 ] ; then
@@ -110,7 +110,7 @@ echo "  3. sha256sum fwts-V${RELEASE_VERSION}.tar.gz >> SHA256SUMS"
 echo "  4. exit"
 echo ""
 
-echo "type \"done\" to continue..."a
+echo "type \"done\" to continue..."
 line=""
 while true ; do
 	read line
@@ -125,9 +125,14 @@ cd ..
 
 # upload the packages to the unstable-crack PPA to build
 cd V${RELEASE_VERSION}
-dput ppa:firmware-testing-team/ppa-fwts-unstable-crack */*es
-echo "Check build status @ \
-      https://launchpad.net/~firmware-testing-team/+archive/ubuntu/ppa-fwts-unstable-crack"
+
+if [ $TEST_BUILD_PPA = false ] ; then
+	dput ppa:firmware-testing-team/ppa-fwts-unstable-crack */*es
+	echo "Check build status @ https://launchpad.net/~firmware-testing-team/+archive/ubuntu/ppa-fwts-unstable-crack"
+else
+	dput ppa:firmware-testing-team/scratch */*es
+	echo "Check build status @ https://launchpad.net/~firmware-testing-team/+archive/ubuntu/scratch"
+fi
 
 # finalize
 echo "When the build finishes, please do the following:"
