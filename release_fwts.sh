@@ -156,9 +156,15 @@ else
 fi
 
 # finalize
-echo "When the build finishes, please do the following:"
-echo "  1. copy packages to stage PPA (Firmware Test Suite (Stable))"
-echo "  2. upload the new FWTS package to the Ubuntu universe archive"
-echo "  3. email to fwts-devel and fwts-announce lists"
-echo "  4. update milestone on https://launchpad.net/fwts"
-echo "  5. build new fwts-live"
+if [ $TEST_BUILD_PPA = true ] ; then
+	echo "Please remove fwts-V${RELEASE_VERSION}.tar.gz on fwts.ubuntu.com"
+	echo "Please remove sha256sum in SHA256SUMS on fwts.ubuntu.com"
+else
+	echo "When the build finishes, please do the following:"
+	echo "  1. copy packages to stage PPA (Firmware Test Suite (Stable))"
+	echo "  2. upload the new FWTS package to the Ubuntu universe archive"
+	echo "  3. email to fwts-devel and fwts-announce lists"
+	echo "  4. update milestone on https://launchpad.net/fwts"
+	echo "  5. build new fwts-live"
+
+fi
