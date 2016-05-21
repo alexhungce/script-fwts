@@ -13,6 +13,7 @@
 shopt -s -o nounset
 TEST_BUILD_PPA=false
 SOURCE_REPO="ssh+git://kernel.ubuntu.com/srv/kernel.ubuntu.com/git/hwe/fwts.git"
+TEST_SOURCE_REPO="https://github.com/alexhungce/fwts"
 EDITOR=gedit
 
 if [ $# -eq 0 ] ; then
@@ -46,7 +47,7 @@ git clone git://kernel.ubuntu.com/hwe/fwts.git
 cd fwts/
 
 if [ $TEST_BUILD_PPA = true ] ; then
-	SOURCE_REPO=https://github.com/alexhungce/fwts
+	SOURCE_REPO=$TEST_SOURCE_REPO
 fi
 
 cat << EOF >> .git/config
@@ -111,6 +112,11 @@ git push upstream master --tags
 mkdir fwts-tarball
 cd fwts-tarball/
 cp ../auto-packager/mk*sh .
+if [ $TEST_BUILD_PPA = true ] ; then
+	# replace REPO for testing build
+	SOURCE_REPO=${SOURCE_REPO//\//\\/}
+	sed -i 's/git:\/\/kernel.ubuntu.com\/hwe\/fwts.git/'"$SOURCE_REPO"'/g' *.sh
+fi
 ./mktar.sh V${RELEASE_VERSION}
 
 # copy the final fwts tarball to fwts.ubuntu.com
@@ -141,12 +147,12 @@ cd ..
 # upload the packages to the unstable-crack PPA to build
 cd V${RELEASE_VERSION}
 
-if [ $TEST_BUILD_PPA = false ] ; then
-	dput ppa:firmware-testing-team/ppa-fwts-unstable-crack */*es
-	echo "Check build status @ https://launchpad.net/~firmware-testing-team/+archive/ubuntu/ppa-fwts-unstable-crack"
-else
+if [ $TEST_BUILD_PPA = true ] ; then
 	dput ppa:firmware-testing-team/scratch */*es
 	echo "Check build status @ https://launchpad.net/~firmware-testing-team/+archive/ubuntu/scratch"
+else
+	dput ppa:firmware-testing-team/ppa-fwts-unstable-crack */*es
+	echo "Check build status @ https://launchpad.net/~firmware-testing-team/+archive/ubuntu/ppa-fwts-unstable-crack"
 fi
 
 # finalize
