@@ -19,9 +19,14 @@ if [ $# -eq 0 ] ; then
 	exit 1
 fi
 
+# == Reminder messages and prerequisites ==
 RELEASE_VERSION=${1}
 echo "FWTS V${RELEASE_VERSION} is to be released."
 echo "Did you update fwts's mkpackage.sh vs. https://wiki.ubuntu.com/Releases?"
+read -p "Please [ENTER] to continue or Ctrl+C to abort"
+
+echo ""
+echo "Please confirm upload rights of kernel.ubuntu.com and fwts.ubuntu.com"
 read -p "Please [ENTER] to continue or Ctrl+C to abort"
 
 if ! which dch > /dev/null ; then
