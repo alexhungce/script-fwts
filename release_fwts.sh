@@ -12,6 +12,7 @@
 # GNU General Public License for more details.
 shopt -s -o nounset
 TEST_BUILD_PPA=false
+SOURCE_REPO="ssh+git://kernel.ubuntu.com/srv/kernel.ubuntu.com/git/hwe/fwts.git"
 EDITOR=gedit
 
 if [ $# -eq 0 ] ; then
@@ -44,11 +45,19 @@ fi
 git clone git://kernel.ubuntu.com/hwe/fwts.git
 cd fwts/
 
+if [ $TEST_BUILD_PPA = true ] ; then
+	SOURCE_REPO=https://github.com/alexhungce/fwts
+fi
+
 cat << EOF >> .git/config
 [remote "upstream"]
          fetch = +refs/heads/*:refs/remotes/upstream/*
-         url = ssh+git://kernel.ubuntu.com/srv/kernel.ubuntu.com/git/hwe/fwts.git
+         url = ${SOURCE_REPO}
 EOF
+
+if [ $TEST_BUILD_PPA = true ] ; then
+	git push -f upstream master
+fi
 
 # generate changelog based on the previous git tag..HEAD
 git shortlog $(git describe --abbrev=0 --tags)..HEAD | sed "s/^     /  */g" > ../fwts_${RELEASE_VERSION}_release_note
