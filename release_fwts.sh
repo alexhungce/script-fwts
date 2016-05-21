@@ -19,14 +19,14 @@ if [ $# -eq 0 ] ; then
 	exit 1
 fi
 
+RELEASE_VERSION=${1}
+echo "FWTS V${RELEASE_VERSION} is to be released."
+read -p "Please [ENTER] to continue or Ctrl+C to abort"
+
 if ! which dch > /dev/null ; then
 	echo "please run \"apt-get install devscripts\""
 	exit 1
 fi
-
-RELEASE_VERSION=${1}
-echo "FWTS V${RELEASE_VERSION} is to be released."
-read -p "Please [ENTER] to continue or Ctrl+C to abort"
 
 # == Prepare the source code ==
 # download fwts source code
@@ -141,6 +141,3 @@ echo "  2. upload the new FWTS package to the Ubuntu universe archive"
 echo "  3. email to fwts-devel and fwts-announce lists"
 echo "  4. update milestone on https://launchpad.net/fwts"
 echo "  5. build new fwts-live"
-
-
-
