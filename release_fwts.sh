@@ -11,7 +11,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 shopt -s -o nounset
-TEST_BUILD_PPA=false
+TEST_BUILD=false
 SOURCE_REPO="ssh+git://kernel.ubuntu.com/srv/kernel.ubuntu.com/git/hwe/fwts.git"
 TEST_SOURCE_REPO="https://github.com/alexhungce/fwts"
 EDITOR=gedit
@@ -46,7 +46,7 @@ fi
 git clone git://kernel.ubuntu.com/hwe/fwts.git
 cd fwts/
 
-if [ $TEST_BUILD_PPA = true ] ; then
+if [ $TEST_BUILD = true ] ; then
 	SOURCE_REPO=$TEST_SOURCE_REPO
 fi
 
@@ -56,7 +56,7 @@ cat << EOF >> .git/config
          url = ${SOURCE_REPO}
 EOF
 
-if [ $TEST_BUILD_PPA = true ] ; then
+if [ $TEST_BUILD = true ] ; then
 	git push -f upstream master
 fi
 
@@ -112,7 +112,7 @@ git push upstream master --tags
 mkdir fwts-tarball
 cd fwts-tarball/
 cp ../auto-packager/mk*sh .
-if [ $TEST_BUILD_PPA = true ] ; then
+if [ $TEST_BUILD = true ] ; then
 	# replace REPO for testing build
 	SOURCE_REPO=${SOURCE_REPO//\//\\/}
 	sed -i 's/git:\/\/kernel.ubuntu.com\/hwe\/fwts.git/'"$SOURCE_REPO"'/g' *.sh
@@ -147,7 +147,7 @@ cd ..
 # upload the packages to the unstable-crack PPA to build
 cd V${RELEASE_VERSION}
 
-if [ $TEST_BUILD_PPA = true ] ; then
+if [ $TEST_BUILD = true ] ; then
 	dput ppa:firmware-testing-team/scratch */*es
 	echo "Check build status @ https://launchpad.net/~firmware-testing-team/+archive/ubuntu/scratch"
 else
@@ -156,7 +156,7 @@ else
 fi
 
 # finalize
-if [ $TEST_BUILD_PPA = true ] ; then
+if [ $TEST_BUILD = true ] ; then
 	echo "Please remove fwts-V${RELEASE_VERSION}.tar.gz on fwts.ubuntu.com"
 	echo "Please remove sha256sum in SHA256SUMS on fwts.ubuntu.com"
 else
