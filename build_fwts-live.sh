@@ -33,7 +33,7 @@ fi
 
 if ! which bzr > /dev/null ; then
 	echo "Installing bzr..."
-	sudo apt-get install bzr
+	sudo apt-get -y install bzr
 	echo ""
 	echo "Please enter Launchpad ID:"
 	read ID
@@ -42,7 +42,7 @@ fi
 
 if ! which mmd > /dev/null ; then
 	echo "Installing mtools..."
-	sudo apt-get install mtools
+	sudo apt-get -y install mtools
 fi
 
 # download source code
