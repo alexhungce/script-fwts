@@ -32,7 +32,8 @@ echo "Please confirm upload rights of kernel.ubuntu.com and fwts.ubuntu.com"
 read -p "Please [ENTER] to continue or Ctrl+C to abort"
 
 if ! which dch > /dev/null ; then
-	echo "please run \"apt-get install devscripts\""
+	echo "Running \"apt-get install devscripts\""
+	sudo apt-get install devscripts
 	exit 1
 fi
 
