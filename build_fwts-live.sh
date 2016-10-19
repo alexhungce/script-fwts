@@ -31,13 +31,9 @@ if ! which lb > /dev/null ; then
 	exit 1
 fi
 
-if ! which bzr > /dev/null ; then
-	echo "Installing bzr..."
-	sudo apt-get -y install bzr
-	echo ""
-	echo "Please enter Launchpad ID:"
-	read ID
-	bzr launchpad-login $ID
+if ! which git > /dev/null ; then
+	echo "Installing git..."
+	sudo apt-get -y install git
 fi
 
 if ! which mmd > /dev/null ; then
@@ -47,7 +43,7 @@ fi
 
 # download source code
 mkdir fwts-live && cd fwts-live
-bzr branch lp:~canonical-hwe-team/bugsy-config/$FWTS_LIVE_SOURCE
+git clone git://git.launchpad.net/~canonical-hwe-team/+git/$FWTS_LIVE_SOURCE
 
 echo "Visit http://packages.ubuntu.com/trusty/kernel/linux-image and update kernel version in chroot"
 echo "Press any key to continue..."
