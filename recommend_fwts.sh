@@ -13,8 +13,8 @@
 
 RECOMMEND_TESTS="version cpufreq maxfreq msr mtrr nx virt aspm dmicheck apicedge klog oops --acpitests --uefitests --log-level=high"
 HWE_TESTS="version mtrr virt apicedge klog oops"
-S3_TESTS="s3 --s3-min-delay=60 --s3-max-delay=90 --s3-sleep-delay=90"
-S4_TESTS="s4 --s4-min-delay=60 --s4-max-delay=90"
+S3_TESTS="s3 --s3-min-delay=60 --s3-max-delay=90 --s3-sleep-delay=90 --s3-multiple=30"
+S4_TESTS="s4 --s4-min-delay=60 --s4-max-delay=90 --s4-multiple=30"
 
 # add PPA for and install latest stable release (only once)
 if ! grep -q ppa-fwts-stable /etc/apt/sources.list /etc/apt/sources.list.d/* ; then
