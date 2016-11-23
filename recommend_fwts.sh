@@ -11,7 +11,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-RECOMMEND_TESTS="version cpufreq maxfreq msr mtrr nx virt aspm dmicheck apicedge klog oops --acpitests --uefitests --log-level=high"
+RECOMMEND_TESTS="version cpufreq maxfreq msr mtrr nx virt aspm dmicheck apicedge klog oops uefibootpath uefirtvariable uefirttime uefirtmisc --acpitests --log-level=high"
 HWE_TESTS="version mtrr virt apicedge klog oops"
 S3_TESTS="s3 --s3-min-delay=60 --s3-max-delay=90 --s3-sleep-delay=90 --s3-multiple=30"
 S4_TESTS="s4 --s4-min-delay=60 --s4-max-delay=90 --s4-multiple=30"
