@@ -166,6 +166,7 @@ else
 	echo "  2. upload the new FWTS package to the Ubuntu universe archive"
 	echo "  3. email to fwts-devel and fwts-announce lists"
 	echo "  4. update milestone on https://launchpad.net/fwts"
-	echo "  5. build new fwts-live"
+	echo "  5. update version on https://wiki.ubuntu.com/FirmwareTestSuite"
+	echo "  6. build new fwts-live"
 
 fi
