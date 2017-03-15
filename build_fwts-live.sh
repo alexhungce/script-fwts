@@ -57,7 +57,7 @@ read
 
 # setup
 FWTS_LIVE_PATH=$(pwd)/$FWTS_LIVE_SOURCE
-mkdir build; cd build; ln -s $FWTS_LIVE_PATH; mv fwts-live-trusty-amd64 config; mkdir chroot
+mkdir build; cd build; ln -s $FWTS_LIVE_PATH; mv $FWTS_LIVE_SOURCE config; mkdir chroot
 
 # compile
 sudo lb clean && sudo lb build
