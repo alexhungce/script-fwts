@@ -12,6 +12,12 @@
 # GNU General Public License for more details.
 shopt -s -o nounset
 
+if [ $# -eq 0 ] ; then
+	echo "Please provide release version, ex. 17.04.00."
+	exit 1
+fi
+
+RELEASE_VERSION=${1}
 FWTS_LIVE_SOURCE=fwts-live-trusty-amd64
 
 cat /etc/lsb-release | grep "Ubuntu 14.04" >> /dev/null
@@ -58,5 +64,5 @@ sudo lb clean && sudo lb build
 
 # find the binary
 echo ""
-find . -name binary.img -ok cp '{}' ~/fwts-live-binary.img ';'
+find . -name binary.img -ok cp '{}' ~/fwts-live-${RELEASE_VERSION}.img ';'
 
