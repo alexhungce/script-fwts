@@ -64,5 +64,5 @@ sudo lb clean && sudo lb build
 
 # find the binary
 echo ""
-find . -name binary.img -ok cp '{}' ~/fwts-live-${RELEASE_VERSION}.img ';'
+find . -name binary.img -exec cp '{}' ~/fwts-live-${RELEASE_VERSION}.img ';'
 
