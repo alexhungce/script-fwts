@@ -125,21 +125,7 @@ cd V${RELEASE_VERSION}/
 scp fwts-V${RELEASE_VERSION}.tar.gz fwts.ubuntu.com:/srv/fwts.ubuntu.com/www/release/
 
 # update SHA256 on fwts.ubuntu.com
-echo "Run the following commands on fwts.ubuntu.com:"
-echo "  1. ssh fwts.ubuntu.com"
-echo "  2. cd /srv/fwts.ubuntu.com/www/release/"
-echo "  3. sha256sum fwts-V${RELEASE_VERSION}.tar.gz >> SHA256SUMS"
-echo "  4. exit"
-echo ""
-
-echo "type \"done\" to continue..."
-line=""
-while true ; do
-	read line
-	if [ "$line" = "done" ] ; then
-		break;
-	fi
-done
+ssh fwts.ubuntu.com "cd /srv/fwts.ubuntu.com/www/release/ ; sha256sum fwts-V${RELEASE_VERSION}.tar.gz >> SHA256SUMS"
 
 # generate the source packages for all supported Ubuntu releases
 cd ..
