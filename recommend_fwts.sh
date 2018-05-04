@@ -31,6 +31,8 @@ fi
 # run specific tests from user inputs
 if [ $1 == "oem" ] ; then
 	sudo fwts $RECOMMEND_TESTS
+elif [ $1 == "ifv" ] ; then
+	sudo fwts $RECOMMEND_TESTS --ifv
 elif [ $1 == "hwe" ] ; then
 	sudo fwts $HWE_TESTS
 elif [ $1 == "s3" ] ; then
