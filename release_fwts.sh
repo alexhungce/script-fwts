@@ -37,6 +37,12 @@ if ! which dch > /dev/null ; then
 	exit 1
 fi
 
+if ! which autopkgtest > /dev/null ; then
+	echo "Running \"apt-get install autopkgtest\""
+	sudo apt-get install autopkgtest
+	exit 1
+fi
+
 # == Prepare the source code ==
 # download fwts source code
 if [ -e fwts ] ; then
@@ -103,6 +109,11 @@ gzip ../fwts_${RELEASE_VERSION}.orig.tar
 
 # build the debian package
 debuild -S -sa -I -i
+
+# run ADT testing
+cd ..
+sudo autopkgtest ./fwts_${RELEASE_VERSION}-0ubuntu1.dsc -- null || exit 1
+cd fwts
 
 # == Build and publish ==
 # commit the changelog file and the tag
