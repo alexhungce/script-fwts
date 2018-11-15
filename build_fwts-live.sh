@@ -20,13 +20,6 @@ fi
 RELEASE_VERSION=${1}
 FWTS_LIVE_SOURCE=fwts-live-trusty-amd64
 
-cat /etc/lsb-release | grep "Ubuntu 14.04" >> /dev/null
-
-if [ $? -ne 0 ] ; then
-	echo "Ubuntu 14.04 is required! aborting..."
-	exit 1
-fi
-
 if [ -e fwts-live ] ; then
 	echo "fwts-live directory exists! aborting..."
 	exit 1
