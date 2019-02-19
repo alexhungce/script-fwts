@@ -165,6 +165,6 @@ else
 	echo "  4. update milestone on https://launchpad.net/fwts"
 	echo "  5. update version on https://wiki.ubuntu.com/FirmwareTestSuite"
 	echo "  6. build new fwts-live"
-	echo "  7. update social media accounts (fb, g+ and twitter)"
+	echo "  7. update social media accounts (fb and twitter)"
 
 fi
