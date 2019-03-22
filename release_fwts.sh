@@ -68,7 +68,7 @@ if [ $TEST_BUILD = true ] ; then
 fi
 
 # generate changelog based on the previous git tag..HEAD
-git shortlog $(git describe --abbrev=0 --tags)..HEAD | sed "s/^     /  */g" > ../fwts_${RELEASE_VERSION}_release_note
+git shortlog $(git describe --abbrev=0 --tags)..HEAD | sed "s/^     /  */g" | awk -F ' \\([[:digit:]]' ' { if ($0 ~ /^[A-Z]/) { print "  ["$1"]" } else { print } } ' > ../fwts_${RELEASE_VERSION}_release_note
 
 # add the changelog to the changelog file
 echo "1. ensure the format is correct, . names, max 80 characters per line etc."
