@@ -14,6 +14,8 @@ shopt -s -o nounset
 TEST_BUILD=false
 SOURCE_REPO="ssh+git://kernel.ubuntu.com/srv/kernel.ubuntu.com/git/hwe/fwts.git"
 TEST_SOURCE_REPO="https://github.com/alexhungce/fwts"
+AUTHOR="Alex Hung <alex.hung@ubuntu.com>"
+UBUNTU="disco"
 EDITOR=gedit
 
 if [ $# -eq 0 ] ; then
@@ -68,7 +70,10 @@ if [ $TEST_BUILD = true ] ; then
 fi
 
 # generate changelog based on the previous git tag..HEAD
-git shortlog $(git describe --abbrev=0 --tags)..HEAD | sed "s/^     /  */g" | awk -F ' \\([[:digit:]]' ' { if ($0 ~ /^[A-Z]/) { print "  ["$1"]" } else { print } } ' > ../fwts_${RELEASE_VERSION}_release_note
+echo "fwts (${RELEASE_VERSION}-0ubuntu1) $UBUNTU; urgency=medium" > ../fwts_${RELEASE_VERSION}_release_note
+echo "" >> ../fwts_${RELEASE_VERSION}_release_note
+git shortlog $(git describe --abbrev=0 --tags)..HEAD | sed "s/^     /  */g" | awk -F ' \\([[:digit:]]' ' { if ($0 ~ /^[A-Z]/) { print "  ["$1"]" } else { print } } ' >> ../fwts_${RELEASE_VERSION}_release_note
+echo " -- $AUTHOR  $(date -R)" >> ../fwts_${RELEASE_VERSION}_release_note
 
 # add the changelog to the changelog file
 echo "1. ensure the format is correct, . names, max 80 characters per line etc."
