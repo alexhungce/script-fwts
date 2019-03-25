@@ -79,8 +79,6 @@ echo " -- $AUTHOR  $(date -R)" >> ../fwts_${RELEASE_VERSION}_release_note
 echo "1. ensure the format is correct, . names, max 80 characters per line etc."
 echo "2. update the version, e.g: \"fwts (15.12.00-0ubuntu0) UNRELEASED; urgency=medium\" to "
 echo "   \"fwts (16.01.00-0ubuntu0) xenial; urgency=medium\""
-
-# TODO may need to pop a window for above messages
 read -p "Please [ENTER] to continue or Ctrl+C to abort"
 
 $EDITOR ../fwts_${RELEASE_VERSION}_release_note &
