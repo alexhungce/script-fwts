@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2016-2019 Canonical
+# Copyright (C) 2019 Canonical
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,44 +18,23 @@ if [ $# -eq 0 ] ; then
 fi
 
 RELEASE_VERSION=${1}
-FWTS_LIVE_SOURCE=fwts-live-trusty-amd64
-
-if [ -e fwts-live ] ; then
-	echo "fwts-live directory exists! aborting..."
-	exit 1
-fi
-
-if ! which lb > /dev/null ; then
-	echo "Please install live-build"
-	exit 1
-fi
 
 if ! which git > /dev/null ; then
 	echo "Installing git..."
 	sudo apt-get -y install git
 fi
 
-if ! which mmd > /dev/null ; then
+if ! which docker > /dev/null ; then
 	echo "Installing mtools..."
-	sudo apt-get -y install mtools
+	sudo apt-get -y install docker.io
+	exit 1
 fi
 
-# download source code
-mkdir fwts-live && cd fwts-live
-git clone git://git.launchpad.net/~canonical-hwe-team/+git/$FWTS_LIVE_SOURCE
-
-echo "Visit http://packages.ubuntu.com/trusty/kernel/linux-image and update kernel version in chroot"
-echo "Press any key to continue..."
-read
-
-# setup
-FWTS_LIVE_PATH=$(pwd)/$FWTS_LIVE_SOURCE
-mkdir build; cd build; ln -s $FWTS_LIVE_PATH; mv $FWTS_LIVE_SOURCE config; mkdir chroot
-
-# compile
-sudo lb clean && sudo lb build
+[ -e fwts-live ] || git clone https://github.com/alexhungce/fwts-live
+cd fwts-live
+sudo make
 
 # find the binary
 echo ""
-find . -name binary.img -exec cp '{}' ~/fwts-live-${RELEASE_VERSION}.img ';'
+find . -name pc.img.xz -exec mv '{}' fwts-live-${RELEASE_VERSION}.img.xz ';'
 
