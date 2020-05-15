@@ -114,6 +114,7 @@ gzip ../fwts_${RELEASE_VERSION}.orig.tar
 debuild -S -sa -I -i
 
 # run ADT testing
+sudo rm /tmp/failure.log
 cd ..
 sudo autopkgtest ./fwts_${RELEASE_VERSION}-0ubuntu1.dsc -- null || exit 1
 cd fwts
