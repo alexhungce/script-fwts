@@ -37,3 +37,5 @@ make
 echo ""
 find . -name pc.img.xz -exec mv '{}' fwts-live-${RELEASE_VERSION}.img.xz ';'
 
+sha256sum fwts-live-${RELEASE_VERSION}.img.xz
+notify-send "building fwts-live is completed..."
