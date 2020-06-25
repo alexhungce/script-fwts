@@ -27,12 +27,14 @@ fi
 if ! which docker > /dev/null ; then
 	echo "Installing docker..."
 	sudo apt-get -y install docker.io
+	# this requires logout
+	sudo usermod -aG docker $USER
 	exit 1
 fi
 
 [ -e fwts-live ] || git clone https://github.com/alexhungce/fwts-live
 cd fwts-live
-sudo make
+make
 
 # find the binary
 echo ""
