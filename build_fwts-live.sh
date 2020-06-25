@@ -12,12 +12,9 @@
 # GNU General Public License for more details.
 shopt -s -o nounset
 
-if [ $# -eq 0 ] ; then
-	echo "Please provide release version, ex. 17.04.00."
-	exit 1
-fi
+sudo apt update
 
-RELEASE_VERSION=${1}
+RELEASE_VERSION=$(apt-cache show fwts | grep ^Version | egrep -o '[0-9]{2}.[0-9]{2}.[0-9]{2}' | sort -r | head -1)
 
 if ! which git > /dev/null ; then
 	echo "Installing git..."
