@@ -25,7 +25,7 @@ if ! which git > /dev/null ; then
 fi
 
 if ! which docker > /dev/null ; then
-	echo "Installing mtools..."
+	echo "Installing docker..."
 	sudo apt-get -y install docker.io
 	exit 1
 fi
