@@ -29,7 +29,7 @@ if ! which docker > /dev/null ; then
 	exit 1
 fi
 
-[ -e fwts-live ] || git clone https://github.com/alexhungce/fwts-live
+[ -e fwts-live ] || git clone https://github.com/alexhungce/fwts-live-focal fwts-live
 cd fwts-live
 make
 
