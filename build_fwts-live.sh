@@ -24,8 +24,9 @@ fi
 if ! which docker > /dev/null ; then
 	echo "Installing docker..."
 	sudo apt-get -y install docker.io
-	# this requires logout
+	# this may require logout/login
 	sudo usermod -aG docker $USER
+	sudo service docker.io restart
 	exit 1
 fi
 
