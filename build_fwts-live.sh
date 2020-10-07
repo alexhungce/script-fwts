@@ -25,18 +25,18 @@ if ! which docker > /dev/null ; then
 	echo "Installing docker..."
 	sudo apt-get -y install docker.io
 	# this may require logout/login
-	sudo usermod -aG docker $USER
+	sudo usermod -aG docker "$USER"
 	sudo service docker.io restart
 	exit 1
 fi
 
 [ -e fwts-live ] || git clone https://github.com/alexhungce/fwts-live-focal fwts-live
-cd fwts-live
+cd fwts-live || exit 2
 make
 
 # find the binary
 echo ""
-find . -name pc.img.xz -exec mv '{}' fwts-live-${RELEASE_VERSION}.img.xz ';'
+find . -name pc.img.xz -exec mv '{}' fwts-live-"${RELEASE_VERSION}".img.xz ';'
 
-sha256sum fwts-live-${RELEASE_VERSION}.img.xz
+sha256sum fwts-live-"${RELEASE_VERSION}".img.xz
 notify-send "building fwts-live is completed..."
