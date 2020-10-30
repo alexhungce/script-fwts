@@ -30,15 +30,15 @@ fi
 
 # run specific tests from user inputs
 if [ "$1" == "oem" ] ; then
-	sudo fwts "$RECOMMEND_TESTS"
+	sudo bash -c fwts "$RECOMMEND_TESTS"
 elif [ "$1" == "ifv" ] ; then
-	sudo fwts "$RECOMMEND_TESTS" --ifv
+	sudo bash -c fwts "$RECOMMEND_TESTS" --ifv
 elif [ "$1" == "hwe" ] ; then
-	sudo fwts "$HWE_TESTS"
+	sudo bash -c fwts "$HWE_TESTS"
 elif [ "$1" == "s3" ] ; then
-	sudo fwts "$S3_TESTS"
+	sudo bash -c fwts "$S3_TESTS"
 elif [ "$1" == "s4" ] ; then
-	sudo fwts "$S4_TESTS"
+	sudo bash -c fwts "$S4_TESTS"
 else
 	echo "invalid arguments!"
 	exit 1
