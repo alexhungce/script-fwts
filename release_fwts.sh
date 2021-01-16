@@ -56,6 +56,7 @@ git clone git://kernel.ubuntu.com/hwe/fwts.git
 cd fwts/
 
 if [ $TEST_BUILD = true ] ; then
+	read -p "Please apply patches for testing and press [ENTER] to continue"
 	SOURCE_REPO=$TEST_SOURCE_REPO
 fi
 
