@@ -23,6 +23,13 @@ if [ $# -eq 0 ] ; then
 	exit 1
 fi
 
+read -p "Is this a test build [y/N]?" -n 1 -r -s
+echo ""
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+	TEST_BUILD=true
+fi
+
 # == Reminder messages and prerequisites ==
 RELEASE_VERSION=${1}
 echo "FWTS V${RELEASE_VERSION} is to be released."
