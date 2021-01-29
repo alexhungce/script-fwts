@@ -13,6 +13,27 @@
 shopt -s -o nounset
 
 readonly UBUNTU=( xenial bionic focal groovy hirsute )
+TAB="$(printf '\t')"
+
+create_dockerfile () {
+cat <<- EOF >> Dockerfile
+FROM ubuntu:${1}
+RUN sed -i '4,20s/# deb-src/deb-src/' /etc/apt/sources.list && apt update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends vim git libbsd-dev
+RUN DEBIAN_FRONTEND=noninteractive apt build-dep -y fwts && git clone git://kernel.ubuntu.com/hwe/fwts.git
+RUN cd fwts && autoreconf -ivf && ./configure && make clean && make -j \`getconf _NPROCESSORS_ONLN\` && make check
+EOF
+}
+create_makefile () {
+cat <<- EOF >> Makefile
+all: clean build
+
+build:
+${TAB}docker build -t fwts-${1} .
+clean:
+${TAB}-docker rmi fwts-${1}
+EOF
+}
 
 if ! which docker > /dev/null ; then
   echo "Installing docker..."
@@ -25,7 +46,14 @@ fi
 cd docker
 for i in "${UBUNTU[@]}"
 do
-  cd $i
+  if [ ! -d ${i} ] ; then
+    mkdir ${i}
+    cd ${i}
+    create_dockerfile ${i}
+    create_makefile ${i}
+    cd ..
+  fi
+  cd ${i}
   make && make clean
   cd ..
 done
