@@ -43,6 +43,7 @@ if ! which docker > /dev/null ; then
   exit
 fi
 
+[ -d docker ] || mkdir docker
 cd docker
 for i in "${UBUNTU[@]}"
 do
