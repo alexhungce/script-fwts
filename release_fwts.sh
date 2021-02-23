@@ -171,7 +171,7 @@ if [ $TEST_BUILD = true ] ; then
 	echo "Please remove sha256sum in SHA256SUMS on fwts.ubuntu.com"
 else
 	echo "When the build finishes, please do the following:"
-	echo "  1. copy packages to stage PPA (Firmware Test Suite (Stable))"
+	echo "  1. copy packages to stage PPA (Firmware Test Suite (Stable) & fwts-release-builds)"
 	echo "  2. upload the new FWTS package to the Ubuntu universe archive"
 	echo "  3. email to fwts-devel and fwts-announce lists"
 	echo "  4. update milestone on https://launchpad.net/fwts"
