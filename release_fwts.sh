@@ -36,6 +36,9 @@ echo "FWTS V${RELEASE_VERSION} is to be released."
 echo "Did you update fwts's mkpackage.sh vs. https://wiki.ubuntu.com/Releases?"
 read -p "Please [ENTER] to continue or Ctrl+C to abort"
 
+# connect to VPN
+nmcli con up canonical-us
+
 echo ""
 echo "Please confirm upload rights of kernel.ubuntu.com and fwts.ubuntu.com"
 read -p "Please [ENTER] to continue or Ctrl+C to abort"
@@ -153,6 +156,9 @@ ssh fwts.ubuntu.com "cd /srv/fwts.ubuntu.com/www/release/ ; sha256sum fwts-V${RE
 # generate the source packages for all supported Ubuntu releases
 cd ..
 ./mkpackage.sh V${RELEASE_VERSION}
+
+# disconnect from VPN
+nmcli con down canonical-us
 
 # upload the packages to the unstable-crack PPA to build
 cd V${RELEASE_VERSION}
