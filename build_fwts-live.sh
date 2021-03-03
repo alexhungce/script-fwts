@@ -15,6 +15,7 @@ shopt -s -o nounset
 sudo apt update
 
 RELEASE_VERSION=$(apt-cache show fwts | grep ^Version | egrep -o '[0-9]{2}.[0-9]{2}.[0-9]{2}' | sort -r | head -1)
+FWTS_LIVE_IMAGE="fwts-live-${RELEASE_VERSION}.img"
 
 if ! which git > /dev/null ; then
 	echo "Installing git..."
@@ -36,7 +37,12 @@ make
 
 # find the binary
 echo ""
-find . -name pc.img.xz -exec mv '{}' fwts-live-${RELEASE_VERSION}.img.xz ';'
+find . -name pc.img.xz -exec mv '{}' ${FWTS_LIVE_IMAGE}.xz ';'
 
-sha256sum fwts-live-${RELEASE_VERSION}.img.xz
+sha256sum ${FWTS_LIVE_IMAGE}.xz
 notify-send "building fwts-live is completed..."
+
+# test built image
+unp ${FWTS_LIVE_IMAGE}.xz
+qemu-system-x86_64 -drive format=raw,file=${FWTS_LIVE_IMAGE} -m 2048 -smp 2
+rm ${FWTS_LIVE_IMAGE}

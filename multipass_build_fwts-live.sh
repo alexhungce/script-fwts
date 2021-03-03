@@ -13,6 +13,7 @@
 shopt -s -o nounset
 
 RELEASE_VERSION=$(apt-cache show fwts | grep ^Version | egrep -o '[0-9]{2}.[0-9]{2}.[0-9]{2}' | sort -r | head -1)
+FWTS_LIVE_IMAGE="fwts-live-${RELEASE_VERSION}.img"
 MULTIPASS_SCRIPT="build_fwts-live-multipass.sh"
 
 
@@ -45,8 +46,13 @@ multipass exec fwts-live  -- ./$MULTIPASS_SCRIPT
 
 rm $MULTIPASS_SCRIPT
 
-multipass transfer fwts-live:/image/pc.img.xz fwts-live-${RELEASE_VERSION}.img.xz
+multipass transfer fwts-live:/image/pc.img.xz ${FWTS_LIVE_IMAGE}.xz
 multipass stop fwts-live
 multipass delete fwts-live
 multipass purge
+
+# test built image
+unp ${FWTS_LIVE_IMAGE}.xz
+qemu-system-x86_64 -drive format=raw,file=${FWTS_LIVE_IMAGE} -m 2048 -smp 2
+rm ${FWTS_LIVE_IMAGE}
 
