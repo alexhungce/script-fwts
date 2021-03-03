@@ -18,7 +18,7 @@ MULTIPASS_SCRIPT="build_fwts-live-multipass.sh"
 
 
 # install multipass
-if ! which tilix &> /dev/null ; then
+if ! which multipass &> /dev/null ; then
 	sudo snap install multipass
 fi
 
