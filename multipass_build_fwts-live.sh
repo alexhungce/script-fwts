@@ -15,7 +15,7 @@ shopt -s -o nounset
 RELEASE_VERSION=$(apt-cache show fwts | grep ^Version | egrep -o '[0-9]{2}.[0-9]{2}.[0-9]{2}' | sort -r | head -1)
 FWTS_LIVE_IMAGE="fwts-live-${RELEASE_VERSION}.img"
 MULTIPASS_SCRIPT="build_fwts-live-multipass.sh"
-
+MULTIPASS_VM="fwts-live"
 
 # install multipass
 if ! which multipass &> /dev/null ; then
@@ -38,17 +38,17 @@ ubuntu-image classic -a amd64 -d -p ubuntu-cpc -s focal -i 850M -O /image --extr
 xz /image/pc.img
 EOF
 
-multipass launch 20.04 --cpus 4 --mem 4G --disk 20G --name fwts-live
+multipass launch 20.04 --cpus 4 --mem 4G --disk 20G --name ${MULTIPASS_VM}
 
-multipass transfer $MULTIPASS_SCRIPT fwts-live:/home/ubuntu/$MULTIPASS_SCRIPT
-multipass exec fwts-live  -- chmod +x $MULTIPASS_SCRIPT
-multipass exec fwts-live  -- ./$MULTIPASS_SCRIPT
+multipass transfer $MULTIPASS_SCRIPT ${MULTIPASS_VM}:/home/ubuntu/$MULTIPASS_SCRIPT
+multipass exec ${MULTIPASS_VM}  -- chmod +x $MULTIPASS_SCRIPT
+multipass exec ${MULTIPASS_VM}  -- ./$MULTIPASS_SCRIPT
 
 rm $MULTIPASS_SCRIPT
 
-multipass transfer fwts-live:/image/pc.img.xz ${FWTS_LIVE_IMAGE}.xz
-multipass stop fwts-live
-multipass delete fwts-live
+multipass transfer ${MULTIPASS_VM}:/image/pc.img.xz ${FWTS_LIVE_IMAGE}.xz
+multipass stop ${MULTIPASS_VM}
+multipass delete ${MULTIPASS_VM}
 multipass purge
 
 sha256sum ${FWTS_LIVE_IMAGE}.xz
