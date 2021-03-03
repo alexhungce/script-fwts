@@ -1,0 +1,52 @@
+#!/bin/bash
+# Copyright (C) 2021 Canonical
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+shopt -s -o nounset
+
+RELEASE_VERSION=$(apt-cache show fwts | grep ^Version | egrep -o '[0-9]{2}.[0-9]{2}.[0-9]{2}' | sort -r | head -1)
+MULTIPASS_SCRIPT="build_fwts-live-multipass.sh"
+
+
+# install multipass
+if ! which tilix &> /dev/null ; then
+	sudo snap install multipass
+fi
+
+# create script for multipass VM ('EOF' is used to avoid expanding variables)
+cat <<- 'EOF' > $MULTIPASS_SCRIPT
+#!/bin/bash
+SELF="$(readlink -f "${BASH_SOURCE[0]}")"
+[[ $UID == 0 ]] || exec sudo -- "$BASH" -- "$SELF" "$@"
+
+printf "deb-src http://archive.ubuntu.com/ubuntu/ %s main universe \n" $(lsb_release -cs){,-updates,-security} | tee -a /etc/apt/sources.list
+apt update && apt -y install build-essential git snapcraft ubuntu-image vmdk-stream-converter && apt-get -y build-dep livecd-rootfs
+
+git clone --depth 1 https://github.com/alexhungce/pc-amd64-gadget-focal.git pc-amd64-gadget && cd pc-amd64-gadget && snapcraft prime && cd ..
+git clone --depth 1 https://github.com/alexhungce/fwts-livecd-rootfs-focal.git fwts-livecd-rootfs && cd fwts-livecd-rootfs && debian/rules binary && dpkg -i ../livecd-rootfs_*_amd64.deb && cd ..
+
+ubuntu-image classic -a amd64 -d -p ubuntu-cpc -s focal -i 850M -O /image --extra-ppas firmware-testing-team/ppa-fwts-stable pc-amd64-gadget/prime
+xz /image/pc.img
+EOF
+
+multipass launch 20.04 --cpus 4 --mem 4G --disk 20G --name fwts-live
+
+multipass transfer $MULTIPASS_SCRIPT fwts-live:/home/ubuntu/$MULTIPASS_SCRIPT
+multipass exec fwts-live  -- chmod +x $MULTIPASS_SCRIPT
+multipass exec fwts-live  -- ./$MULTIPASS_SCRIPT
+
+rm $MULTIPASS_SCRIPT
+
+multipass transfer fwts-live:/image/pc.img.xz fwts-live-${RELEASE_VERSION}.img.xz
+multipass stop fwts-live
+multipass delete fwts-live
+multipass purge
+
