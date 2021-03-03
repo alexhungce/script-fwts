@@ -51,6 +51,9 @@ multipass stop fwts-live
 multipass delete fwts-live
 multipass purge
 
+sha256sum ${FWTS_LIVE_IMAGE}.xz
+notify-send "building fwts-live is completed..."
+
 # test built image
 unp ${FWTS_LIVE_IMAGE}.xz
 qemu-system-x86_64 -drive format=raw,file=${FWTS_LIVE_IMAGE} -m 2048 -smp 2
