@@ -28,13 +28,21 @@ cat <<- 'EOF' > $MULTIPASS_SCRIPT
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 [[ $UID == 0 ]] || exec sudo -- "$BASH" -- "$SELF" "$@"
 
-printf "deb-src http://archive.ubuntu.com/ubuntu/ %s main universe \n" $(lsb_release -cs){,-updates,-security} | tee -a /etc/apt/sources.list
-apt update && apt -y install build-essential git snapcraft ubuntu-image vmdk-stream-converter && apt-get -y build-dep livecd-rootfs
+printf "deb-src http://archive.ubuntu.com/ubuntu/ %s main universe \n" $(lsb_release -cs){,-updates,-security} | \
+	tee -a /etc/apt/sources.list
 
-git clone --depth 1 https://github.com/alexhungce/pc-amd64-gadget-focal.git pc-amd64-gadget && cd pc-amd64-gadget && snapcraft prime && cd ..
-git clone --depth 1 https://github.com/alexhungce/fwts-livecd-rootfs-focal.git fwts-livecd-rootfs && cd fwts-livecd-rootfs && debian/rules binary && dpkg -i ../livecd-rootfs_*_amd64.deb && cd ..
+apt update && apt -y install build-essential git snapcraft ubuntu-image vmdk-stream-converter
+apt-get -y build-dep livecd-rootfs
 
-ubuntu-image classic -a amd64 -d -p ubuntu-cpc -s focal -i 850M -O /image --extra-ppas firmware-testing-team/ppa-fwts-stable pc-amd64-gadget/prime
+git clone --depth 1 https://github.com/alexhungce/pc-amd64-gadget-focal.git pc-amd64-gadget
+cd pc-amd64-gadget && snapcraft prime && cd ..
+
+git clone --depth 1 https://github.com/alexhungce/fwts-livecd-rootfs-focal.git fwts-livecd-rootfs
+cd fwts-livecd-rootfs && debian/rules binary && dpkg -i ../livecd-rootfs_*_amd64.deb && cd ..
+
+ubuntu-image classic -a amd64 -d -p ubuntu-cpc -s focal -i 850M -O /image --extra-ppas \
+	firmware-testing-team/ppa-fwts-stable pc-amd64-gadget/prime
+
 xz /image/pc.img
 EOF
 
