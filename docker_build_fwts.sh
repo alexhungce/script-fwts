@@ -12,7 +12,7 @@
 # GNU General Public License for more details.
 shopt -s -o nounset
 
-readonly UBUNTU=( xenial bionic focal groovy hirsute )
+readonly UBUNTU=( bionic focal groovy hirsute impish )
 TAB="$(printf '\t')"
 
 create_dockerfile () {
