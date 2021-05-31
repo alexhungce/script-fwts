@@ -32,6 +32,7 @@ build:
 ${TAB}docker build -t fwts-${1} .
 clean:
 ${TAB}-docker rmi fwts-${1}
+${TAB}-docker rmi ubuntu:${1}
 EOF
 }
 
