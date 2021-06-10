@@ -51,7 +51,7 @@ ubuntu-image classic -a amd64 -d -p ubuntu-cpc -s $UBUNTU_VERSION -i 850M -O /im
 xz /image/pc.img
 EOF
 
-multipass launch 20.04 --cpus 4 --mem 4G --disk 20G --name ${MULTIPASS_VM}
+multipass launch 18.04 --cpus 4 --mem 4G --disk 20G --name ${MULTIPASS_VM}
 
 multipass transfer $MULTIPASS_SCRIPT ${MULTIPASS_VM}:/home/ubuntu/$MULTIPASS_SCRIPT
 multipass exec ${MULTIPASS_VM}  -- chmod +x $MULTIPASS_SCRIPT
