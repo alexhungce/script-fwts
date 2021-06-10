@@ -64,11 +64,13 @@ multipass stop ${MULTIPASS_VM}
 multipass delete ${MULTIPASS_VM}
 multipass purge
 
-sha256sum ${FWTS_LIVE_IMAGE}.xz
 notify-send "building fwts-live is completed..."
 
-# test built image
-unp ${FWTS_LIVE_IMAGE}.xz
-qemu-system-x86_64 -drive format=raw,file=${FWTS_LIVE_IMAGE} -m 2048 -smp 2
-rm ${FWTS_LIVE_IMAGE}
+if [ -f ${FWTS_LIVE_IMAGE}.xz ] ; then
+	sha256sum ${FWTS_LIVE_IMAGE}.xz
+	# test built image
+	unp ${FWTS_LIVE_IMAGE}.xz
+	qemu-system-x86_64 -drive format=raw,file=${FWTS_LIVE_IMAGE} -m 2048 -smp 2
+	rm ${FWTS_LIVE_IMAGE}
+fi
 
