@@ -16,19 +16,24 @@ RELEASE_VERSION=$(apt-cache show fwts | grep ^Version | egrep -o '[0-9]{2}.[0-9]
 FWTS_LIVE_IMAGE="fwts-live-${RELEASE_VERSION}.img"
 MULTIPASS_SCRIPT="build_fwts-live-multipass.sh"
 MULTIPASS_VM="fwts-live"
+UBUNTU_VERSION=focal
 
 # install multipass
 if ! which multipass &> /dev/null ; then
 	sudo snap install multipass
 fi
 
-# create script for multipass VM ('EOF' is used to avoid expanding variables)
-cat <<- 'EOF' > $MULTIPASS_SCRIPT
-#!/bin/bash
-SELF="$(readlink -f "${BASH_SOURCE[0]}")"
-[[ $UID == 0 ]] || exec sudo -- "$BASH" -- "$SELF" "$@"
+if [ $# -ne 0 ] ; then
+	UBUNTU_VERSION=$1
+fi
 
-printf "deb-src http://archive.ubuntu.com/ubuntu/ %s main universe \n" $(lsb_release -cs){,-updates,-security} | \
+# create script for multipass VM ('EOF' is used to avoid expanding variables)
+cat <<- EOF > $MULTIPASS_SCRIPT
+#!/bin/bash
+SELF="\$(readlink -f "\${BASH_SOURCE[0]}")"
+[[ \$UID == 0 ]] || exec sudo -- "\$BASH" -- "\$SELF" "\$@"
+
+printf "deb-src http://archive.ubuntu.com/ubuntu/ %s main universe \n" \$(lsb_release -cs){,-updates,-security} | \\
 	tee -a /etc/apt/sources.list
 
 apt update && apt -y install build-essential git snapcraft ubuntu-image vmdk-stream-converter
@@ -40,7 +45,7 @@ cd pc-amd64-gadget && snapcraft prime && cd ..
 git clone --depth 1 https://github.com/alexhungce/fwts-livecd-rootfs-focal.git fwts-livecd-rootfs
 cd fwts-livecd-rootfs && debian/rules binary && dpkg -i ../livecd-rootfs_*_amd64.deb && cd ..
 
-ubuntu-image classic -a amd64 -d -p ubuntu-cpc -s focal -i 850M -O /image --extra-ppas \
+ubuntu-image classic -a amd64 -d -p ubuntu-cpc -s $UBUNTU_VERSION -i 850M -O /image --extra-ppas \\
 	firmware-testing-team/ppa-fwts-stable pc-amd64-gadget/prime
 
 xz /image/pc.img
