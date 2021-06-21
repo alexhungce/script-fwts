@@ -16,7 +16,7 @@ RELEASE_VERSION=$(apt-cache show fwts | grep ^Version | egrep -o '[0-9]{2}.[0-9]
 FWTS_LIVE_IMAGE="fwts-live-${RELEASE_VERSION}-x86.img"
 MULTIPASS_SCRIPT="build_fwts-live-multipass.sh"
 MULTIPASS_VM="fwts-live"
-UBUNTU_VERSION=focal
+UBUNTU_VERSION=hirsute
 
 # install multipass
 if ! which multipass &> /dev/null ; then
