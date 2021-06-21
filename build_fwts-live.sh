@@ -15,7 +15,7 @@ shopt -s -o nounset
 sudo apt update
 
 RELEASE_VERSION=$(apt-cache show fwts | grep ^Version | egrep -o '[0-9]{2}.[0-9]{2}.[0-9]{2}' | sort -r | head -1)
-FWTS_LIVE_IMAGE="fwts-live-${RELEASE_VERSION}.img"
+FWTS_LIVE_IMAGE="fwts-live-${RELEASE_VERSION}-x86.img"
 
 if ! which git > /dev/null ; then
 	echo "Installing git..."
