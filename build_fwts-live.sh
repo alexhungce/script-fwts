@@ -33,15 +33,7 @@ if ! which docker > /dev/null ; then
 	exit 1
 fi
 
-if [ $ARCH == 'x86_64' ] ; then
-	[ -e fwts-live ] || git clone https://github.com/alexhungce/fwts-live-focal fwts-live
-elif [ $ARCH == 'aarch64' ] ; then
-	[ -e fwts-live ] || git clone https://github.com/alexhungce/fwts-live-aarch64 fwts-live
-else
-	echo "$ARCH is not supported! Exiting ..."
-	exit
-fi
-
+[ -e fwts-live ] || git clone https://github.com/alexhungce/fwts-live-${ARCH} fwts-live
 cd fwts-live
 make
 
