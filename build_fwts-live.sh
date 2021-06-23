@@ -37,12 +37,15 @@ fi
 cd fwts-live
 make
 
-# find the binary
+# find and rename the binary
 echo ""
-find . -name pc.img.xz -exec mv '{}' ${FWTS_LIVE_IMAGE}.xz ';'
+if [ $ARCH == 'x86_64' ] ; then
+	find . -name pc.img.xz -exec mv '{}' ${FWTS_LIVE_IMAGE}.xz ';'
+elif [ $ARCH == 'aarch64' ] ; then
+	find . -name arm64.img.xz -exec mv '{}' ${FWTS_LIVE_IMAGE}.xz ';'
+fi
 
 sha256sum ${FWTS_LIVE_IMAGE}.xz
-
 
 if [ $ARCH == 'x86_64' ] ; then
 	notify-send "building fwts-live is completed..."
