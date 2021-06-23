@@ -14,8 +14,10 @@ shopt -s -o nounset
 
 sudo apt update
 
+ARCH=$(uname -m)
 RELEASE_VERSION=$(apt-cache show fwts | grep ^Version | egrep -o '[0-9]{2}.[0-9]{2}.[0-9]{2}' | sort -r | head -1)
-FWTS_LIVE_IMAGE="fwts-live-${RELEASE_VERSION}-x86.img"
+FWTS_LIVE_IMAGE="fwts-live-${RELEASE_VERSION}-${ARCH}.img"
+
 
 if ! which git > /dev/null ; then
 	echo "Installing git..."
@@ -31,7 +33,15 @@ if ! which docker > /dev/null ; then
 	exit 1
 fi
 
-[ -e fwts-live ] || git clone https://github.com/alexhungce/fwts-live-focal fwts-live
+if [ $ARCH == 'x86_64' ] ; then
+	[ -e fwts-live ] || git clone https://github.com/alexhungce/fwts-live-focal fwts-live
+elif [ $ARCH == 'aarch64' ] ; then
+	[ -e fwts-live ] || git clone https://github.com/alexhungce/fwts-live-aarch64 fwts-live
+else
+	echo "$ARCH is not supported! Exiting ..."
+	exit
+fi
+
 cd fwts-live
 make
 
@@ -40,9 +50,13 @@ echo ""
 find . -name pc.img.xz -exec mv '{}' ${FWTS_LIVE_IMAGE}.xz ';'
 
 sha256sum ${FWTS_LIVE_IMAGE}.xz
-notify-send "building fwts-live is completed..."
 
-# test built image
-unp ${FWTS_LIVE_IMAGE}.xz
-qemu-system-x86_64 -drive format=raw,file=${FWTS_LIVE_IMAGE} -m 2048 -smp 2
-rm ${FWTS_LIVE_IMAGE}
+
+if [ $ARCH == 'x86_64' ] ; then
+	notify-send "building fwts-live is completed..."
+
+	# test built image
+	unp ${FWTS_LIVE_IMAGE}.xz
+	qemu-system-x86_64 -drive format=raw,file=${FWTS_LIVE_IMAGE} -m 2048 -smp 2
+	rm ${FWTS_LIVE_IMAGE}
+fi
