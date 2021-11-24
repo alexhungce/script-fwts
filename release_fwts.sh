@@ -15,7 +15,7 @@ TEST_BUILD=false
 SOURCE_REPO="ssh+git://kernel.ubuntu.com/srv/kernel.ubuntu.com/git/hwe/fwts.git"
 TEST_SOURCE_REPO="https://github.com/alexhungce/fwts"
 AUTHOR="Alex Hung <alex.hung@ubuntu.com>"
-UBUNTU="impish"
+UBUNTU="jammy"
 EDITOR=gedit
 
 if [ $# -eq 0 ] ; then
